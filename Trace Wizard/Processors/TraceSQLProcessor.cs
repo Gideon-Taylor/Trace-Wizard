@@ -47,6 +47,7 @@ namespace TraceWizard.Processors
             var lineCount = File.ReadLines(_file).Count();
 
             List<ITraceProcessor> Processors = new List<ITraceProcessor>();
+            Processors.Add(new CobolTraceProcessor());
             Processors.Add(new SQLProcessor());
             Processors.Add(new StackTraceProcessor());
             Processors.Add(new ComponentTraceVariableProcessor());

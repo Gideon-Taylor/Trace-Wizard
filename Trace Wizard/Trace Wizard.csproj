@@ -104,6 +104,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Processors\ComponentTraceVariableProcessor.cs" />
+    <Compile Include="Processors\CobolTraceProcessor.cs" />
     <Compile Include="UI\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
