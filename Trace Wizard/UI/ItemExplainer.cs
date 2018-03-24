@@ -103,9 +103,17 @@ namespace TraceWizard.UI
                         var index = sql.BindValues[x].Index;
                         var value = sql.BindValues[x].Value;
                         var typ = sql.BindValues[x].Type;
+                        var typeString = sql.BindValues[x].TypeString;
                         var length = sql.BindValues[x].Length;
 
-                        lines.Add(String.Format("Bind #{0} - {1} ({2}) - {3}", index, typ, length, value));
+                        if (typeString != null)
+                        {
+                            lines.Add(String.Format("Bind #{0} - {1} ({2}) - {3}", index, typeString , length, value));
+                        } else
+                        {
+                            lines.Add(String.Format("Bind #{0} - {1} ({2}) - {3}", index, typ, length, value));
+                        }
+                        
                     }
                     if (sql.BufferData != null)
                     {

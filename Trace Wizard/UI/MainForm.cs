@@ -380,6 +380,10 @@ namespace TraceWizard
 
                     if (selectedItem.Tag.GetType().Equals(typeof(SQLStatement)))
                     {
+                        if (((SQLStatement)(selectedItem.Tag)).Cobol)
+                        {
+                            return;
+                        }
                         if (IsRunningMono)
                         {
                             var callDepth = 0;

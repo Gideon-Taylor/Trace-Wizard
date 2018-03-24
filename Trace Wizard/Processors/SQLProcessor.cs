@@ -138,7 +138,10 @@ namespace TraceWizard.Processors
                 return;
             }
             /* add final sql statement */
-            Statements.Add(currentStatement);
+            if (currentStatement != null)
+            {
+                Statements.Add(currentStatement);
+            }
 
             /* Group them all by Where */
             var sqlByWhereList = td.SQLByWhere;
