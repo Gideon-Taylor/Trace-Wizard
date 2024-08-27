@@ -9,8 +9,8 @@ namespace TraceWizard.Processors
     {
         TraceData _data = null;
 
-        Regex appEngineStart = new Regex(@"-- (\d{2}:\d{2}:\d{2}.\d\d\d) \d{4}-\d{2}-\d{2} Tracing Application Engine program ([^ ]+)");
-        Regex stepMarker = new Regex(@"-- (\d{2}:\d{2}:\d{2}.\d\d\d) (\.+)\(([^.]+)\.([^.]+)\.([^.)]+)\) \((.*?)\)");
+        Regex appEngineStart = new Regex(@"-- \d{4}-\d{2}-\d{2} (\d{2}:\d{2}:\d{2}.\d\d\d) Tracing Application Engine program ([^ ]+) (.*)");
+        Regex stepMarker = new Regex(@"-- \d{4}-\d{2}-\d{2} (\d{2}:\d{2}:\d{2}.\d\d\d) (\.+)\(([^.]+)\.([^.]+)\.([^.)]+)\) \((.*?)\)");
         ExecutionContext ctx = null;
         int lastIndent = 0;
 
@@ -19,7 +19,7 @@ namespace TraceWizard.Processors
             var match = appEngineStart.Match(line);
             if (match.Success)
             {
-                ctx.ContextID = "App Engine " + match.Groups[2].Value;
+                ctx.ContextID = "App Engine " + match.Groups[2].Value + "(" + match.Groups[3] + ")";
                 return;
             }
 
