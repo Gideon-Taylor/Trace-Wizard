@@ -676,6 +676,50 @@ namespace TraceWizard.UI
             }
         }
 
+        internal static void BuildVariableList(ListView lstVariables, List<VariableBundle> variables)
+        {
+            lstVariables.BeginUpdate();
+            lstVariables.Columns.Clear();
+            lstVariables.Items.Clear();
+
+            var ctxHeader = lstVariables.Columns.Add("Context");
+            var typeHeader = lstVariables.Columns.Add("Type");
+            var countHeader = lstVariables.Columns.Add("Variable Count");
+
+            lstVariables.Items.Clear();
+            foreach(var bundle in variables)
+            {
+                
+                ListViewItem item = new ListViewItem();
+                item.Tag = bundle;
+                item.Text = bundle.Context.ToString();
+                switch (bundle.Type)
+                {
+                    case BundleType.COMPONENT_SERIALIZED:
+                        item.SubItems.Add("Component Serialized");
+                        break;
+                    case BundleType.COMPONENT_DESERIALIZED:
+                        item.SubItems.Add("Component Deserialized");
+                        break;
+                    case BundleType.GLOBAL_SERIALIZED:
+                        item.SubItems.Add("Global Serialized");
+                        break;
+                    case BundleType.GLOBAL_DESERIALIZED:
+                        item.SubItems.Add("Global Deserialized");
+                        break;
+                }
+
+                item.SubItems.Add(bundle.Variables.Count.ToString());
+                lstVariables.Items.Add(item);
+
+            }
+            ctxHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+            typeHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+            countHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+            lstVariables.EndUpdate();
+
+        }
+
         public static void BuildFromSQLList(ListView view, List<SQLByFrom> sqls)
         {
             view.BeginUpdate();

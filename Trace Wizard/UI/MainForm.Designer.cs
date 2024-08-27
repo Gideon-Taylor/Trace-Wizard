@@ -94,6 +94,8 @@
             this.ppcObjectTab = new System.Windows.Forms.TabPage();
             this.ppcObjectTree = new System.Windows.Forms.TreeView();
             this.ppcObjectFindBox = new System.Windows.Forms.TextBox();
+            this.variablesTab = new System.Windows.Forms.TabPage();
+            this.lstVariables = new System.Windows.Forms.ListView();
             this.detailsBox = new System.Windows.Forms.ListBox();
             this.detailsContextStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -113,6 +115,7 @@
             this.sqlStatementsTab.SuspendLayout();
             this.stackTraceTab.SuspendLayout();
             this.ppcObjectTab.SuspendLayout();
+            this.variablesTab.SuspendLayout();
             this.detailsContextStrip.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
@@ -540,6 +543,7 @@
             this.mainTabStrip.Controls.Add(this.sqlStatementsTab);
             this.mainTabStrip.Controls.Add(this.stackTraceTab);
             this.mainTabStrip.Controls.Add(this.ppcObjectTab);
+            this.mainTabStrip.Controls.Add(this.variablesTab);
             this.mainTabStrip.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTabStrip.Location = new System.Drawing.Point(0, 0);
             this.mainTabStrip.Name = "mainTabStrip";
@@ -707,6 +711,32 @@
             this.ppcObjectFindBox.TabIndex = 4;
             this.ppcObjectFindBox.Visible = false;
             // 
+            // variablesTab
+            // 
+            this.variablesTab.Controls.Add(this.lstVariables);
+            this.variablesTab.Location = new System.Drawing.Point(4, 22);
+            this.variablesTab.Name = "variablesTab";
+            this.variablesTab.Padding = new System.Windows.Forms.Padding(3);
+            this.variablesTab.Size = new System.Drawing.Size(1022, 350);
+            this.variablesTab.TabIndex = 5;
+            this.variablesTab.Text = "Global/Component Vars";
+            this.variablesTab.UseVisualStyleBackColor = true;
+            // 
+            // lstVariables
+            // 
+            this.lstVariables.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstVariables.Font = new System.Drawing.Font("Verdana", 9F);
+            this.lstVariables.FullRowSelect = true;
+            this.lstVariables.GridLines = true;
+            this.lstVariables.HideSelection = false;
+            this.lstVariables.Location = new System.Drawing.Point(3, 3);
+            this.lstVariables.MultiSelect = false;
+            this.lstVariables.Name = "lstVariables";
+            this.lstVariables.Size = new System.Drawing.Size(1016, 344);
+            this.lstVariables.TabIndex = 2;
+            this.lstVariables.UseCompatibleStateImageBehavior = false;
+            this.lstVariables.View = System.Windows.Forms.View.Details;
+            // 
             // detailsBox
             // 
             this.detailsBox.ContextMenuStrip = this.detailsContextStrip;
@@ -783,6 +813,7 @@
             this.stackTraceTab.PerformLayout();
             this.ppcObjectTab.ResumeLayout(false);
             this.ppcObjectTab.PerformLayout();
+            this.variablesTab.ResumeLayout(false);
             this.detailsContextStrip.ResumeLayout(false);
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.ResumeLayout(false);
@@ -865,6 +896,8 @@
         private System.Windows.Forms.ToolStripMenuItem copyLineNumberToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem copyCallStartLineToolStripMenuItem;
+        private System.Windows.Forms.TabPage variablesTab;
+        private System.Windows.Forms.ListView lstVariables;
     }
 }
 

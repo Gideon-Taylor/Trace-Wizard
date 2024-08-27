@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TraceWizard</RootNamespace>
     <AssemblyName>Trace Wizard</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -33,7 +33,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -52,7 +52,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
@@ -95,6 +95,7 @@
     <Compile Include="Data\StatisticItem.cs" />
     <Compile Include="Data\Serialization\TraceDeserializer.cs" />
     <Compile Include="Data\Serialization\TraceSerializer.cs" />
+    <Compile Include="Data\VariableBundle.cs" />
     <Compile Include="Diff\Diff.cs" />
     <Compile Include="Diff\PathDiff.cs" />
     <Compile Include="Processors\AETExecutionPathProcessor.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Processors\AETTraceProcessor.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Processors\ComponentTraceVariableProcessor.cs" />
     <Compile Include="UI\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -219,6 +221,10 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.NetAnalyzers.8.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.NetAnalyzers.8.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.NetAnalyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

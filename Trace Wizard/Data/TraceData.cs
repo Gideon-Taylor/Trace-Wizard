@@ -41,6 +41,8 @@ namespace TraceWizard.Data
 
         public List<StatisticItem> Statistics = new List<StatisticItem>();
 
+        public List<VariableBundle> Variables = new List<VariableBundle>();
+
         public long MaxCallDepth;
     }
 
