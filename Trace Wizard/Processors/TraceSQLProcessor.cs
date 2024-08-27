@@ -35,7 +35,7 @@ namespace TraceWizard.Processors
     {
         string _file;
         private TraceData Data = new TraceData();
-
+        public bool IsAETrace = false;
         public TraceSQLProcessor(string filename)
         {
             _file = filename;
@@ -51,7 +51,7 @@ namespace TraceWizard.Processors
             Processors.Add(new StackTraceProcessor());
             Processors.Add(new ComponentTraceVariableProcessor());
             /* NOTE: This one is purposefully last because it relies on SQL and StackTrace data in post process */
-            Processors.Add(new ExecutionPathProcessor());
+            Processors.Add(new ExecutionPathProcessor(this.IsAETrace));
             foreach (ITraceProcessor proc in Processors)
             {
                 proc.ProcessorInit(Data);

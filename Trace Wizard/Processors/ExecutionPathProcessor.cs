@@ -484,9 +484,22 @@ namespace TraceWizard.Processors
 
         Dictionary<string, ExecutionContext> contextMap = new Dictionary<string, ExecutionContext>();
 
+        bool isAETrace = false;
+
+        public ExecutionPathProcessor(bool isAETrace = false)
+        {
+            this.isAETrace = isAETrace;
+        }
+
         public void ProcessorInit(TraceData data)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+
+            if (this.isAETrace)
+            {
+                /* Create an App Engine "context" here */
+            }
+
         }
 
         public void ProcessorComplete(TraceData td)
@@ -580,11 +593,20 @@ namespace TraceWizard.Processors
         public void ProcessLine(string line, long lineNumber)
         {
 
-            if (contextMarker.IsMatch(line) == false)
+            if (!this.isAETrace && contextMarker.IsMatch(line) == false)
             {
                 return;
             }
-            var currentContextString = contextMarker.Match(line).Groups[0].Value;
+
+            var currentContextString = "";
+
+            if (!this.isAETrace)
+            {
+                currentContextString = contextMarker.Match(line).Groups[0].Value;
+            } else
+            {
+                currentContextString = "App Engine Execution";
+            }
 
             if (contextMap.ContainsKey(currentContextString) == false)
             {

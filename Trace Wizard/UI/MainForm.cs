@@ -190,6 +190,17 @@ namespace TraceWizard
                     if (fileExtension.Equals(".tracesql") || fileExtension.Equals(".trc"))
                     {
                         processor = new TraceSQLProcessor(filename);
+
+                        /* Read first line and check to see if this is an AE Tracesql */
+                        var or = File.OpenRead(filename);
+                        var sr = new StreamReader(or);
+                        var firstLine = sr.ReadLine();
+                        if (firstLine.Contains("AE SQL/PeopleCode Trace"))
+                        {
+                            ((TraceSQLProcessor)processor).IsAETrace = true;
+                        }
+                        sr.Close();
+
                         processor.WorkerReportsProgress = true;
                         processor.WorkerSupportsCancellation = true;
 
