@@ -12,6 +12,7 @@ using TraceWizard.Data;
 using TraceWizard.Data.Serialization;
 using TraceWizard.Processors;
 using BasicSQLFormatter;
+using System.Diagnostics;
 namespace TraceWizard.UI
 {
     public partial class CompareDialog : Form
@@ -174,6 +175,17 @@ namespace TraceWizard.UI
                     if (fileExtension.Equals(".tracesql") || fileExtension.Equals(".trc"))
                     {
                         rightProcessor = new TraceSQLProcessor(filename);
+
+                        /* Read first line and check to see if this is an AE Tracesql */
+                        var or = File.OpenRead(filename);
+                        var sr = new StreamReader(or);
+                        var firstLine = sr.ReadLine();
+                        if (firstLine.Contains("AE SQL/PeopleCode Trace"))
+                        {
+                            ((TraceSQLProcessor)rightProcessor).IsAETrace = true;
+                        }
+                        sr.Close();
+
                     }
                     else if (fileExtension.Equals(".aet"))
                     {
