@@ -186,42 +186,12 @@ namespace TraceWizard
                 }
                 else
                 {
-                    var fileExtension = new FileInfo(filename).Extension.ToLower();
-                    if (fileExtension.Equals(".tracesql") || fileExtension.Equals(".trc"))
-                    {
-                        processor = new TraceSQLProcessor(filename);
-
-                        /* Read first line and check to see if this is an AE Tracesql */
-                        var or = File.OpenRead(filename);
-                        var sr = new StreamReader(or);
-                        var firstLine = sr.ReadLine();
-                        if (firstLine.Contains("AE SQL/PeopleCode Trace"))
-                        {
-                            ((TraceSQLProcessor)processor).IsAETrace = true;
-                        }
-                        sr.Close();
-
-                        processor.WorkerReportsProgress = true;
-                        processor.WorkerSupportsCancellation = true;
-
-                        processor.ProgressChanged += Processor_ProgressChanged;
-                        processor.RunWorkerCompleted += Processor_RunWorkerCompleted;
-                        sw.Reset();
-                        sw.Start();
-                        processor.RunWorkerAsync();
-                    }
-                    else if (fileExtension.Equals(".aet"))
-                    {
-                        processor = new AETTraceProcessor(filename);
-                        processor.WorkerReportsProgress = true;
-                        processor.WorkerSupportsCancellation = true;
-
-                        processor.ProgressChanged += Processor_ProgressChanged;
-                        processor.RunWorkerCompleted += Processor_RunWorkerCompleted;
-                        sw.Reset();
-                        sw.Start();
-                        processor.RunWorkerAsync();
-                    }
+                    processor = TraceProcessor.ForFile(filename);
+                    processor.ProgressChanged += Processor_ProgressChanged;
+                    processor.RunWorkerCompleted += Processor_RunWorkerCompleted;
+                    sw.Reset();
+                    sw.Start();
+                    processor.RunWorkerAsync();
                 }
             }
         }

@@ -592,6 +592,14 @@ namespace TraceWizard.Processors
 
         public void ProcessLine(string line, long lineNumber)
         {
+            if (lineNumber == 1)
+            {
+                if (line.Contains("AE SQL/PeopleCode Trace"))
+                {
+                    this.isAETrace = true;
+                    return;
+                }
+            }
 
             if (!this.isAETrace && contextMarker.IsMatch(line) == false)
             {
