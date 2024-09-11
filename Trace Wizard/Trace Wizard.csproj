@@ -98,13 +98,14 @@
     <Compile Include="Data\VariableBundle.cs" />
     <Compile Include="Diff\Diff.cs" />
     <Compile Include="Diff\PathDiff.cs" />
-    <Compile Include="Processors\AETExecutionPathProcessor.cs" />
-    <Compile Include="Processors\AETSQLProcessor.cs" />
-    <Compile Include="Processors\AETTraceProcessor.cs">
+    <Compile Include="Processors\AET\AETExecutionPathProcessor.cs" />
+    <Compile Include="Processors\AET\AETSQLProcessor.cs" />
+    <Compile Include="Processors\Cobol\CobolExecutionPathProcessor.cs" />
+    <Compile Include="Processors\Cobol\CobolSQLProcessor.cs" />
+    <Compile Include="Processors\TraceSQL\ComponentTraceVariableProcessor.cs" />
+    <Compile Include="Processors\TraceProcessor.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Processors\ComponentTraceVariableProcessor.cs" />
-    <Compile Include="Processors\CobolTraceProcessor.cs" />
     <Compile Include="UI\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,13 +134,10 @@
     <Compile Include="UI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Processors\StackTraceProcessor.cs" />
-    <Compile Include="Processors\ExecutionPathProcessor.cs" />
+    <Compile Include="Processors\TraceSQL\StackTraceProcessor.cs" />
+    <Compile Include="Processors\TraceSQL\ExecutionPathProcessor.cs" />
     <Compile Include="Processors\ITraceProcessor.cs" />
-    <Compile Include="Processors\SQLProcessor.cs" />
-    <Compile Include="Processors\TraceSQLProcessor.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Processors\TraceSQL\SQLProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\MonoWarningDialog.cs">

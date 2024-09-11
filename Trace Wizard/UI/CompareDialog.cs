@@ -83,18 +83,7 @@ namespace TraceWizard.UI
                 else
                 {
 
-                    var fileExtension = new FileInfo(filename).Extension.ToLower();
-
-                    if (fileExtension.Equals(".tracesql") || fileExtension.Equals(".trc"))
-                    {
-                        leftProcessor = new TraceSQLProcessor(filename);
-                    } else if (fileExtension.Equals(".aet"))
-                    {
-                        leftProcessor = new AETTraceProcessor(filename);
-                    }
-
-                    leftProcessor.WorkerReportsProgress = true;
-                    leftProcessor.WorkerSupportsCancellation = true;
+                    leftProcessor = TraceProcessor.ForFile(filename);
 
                     leftProcessor.ProgressChanged += ProcessorLeft_ProgressChanged;
                     leftProcessor.RunWorkerCompleted += ProcessorLeft_RunWorkerCompleted;
@@ -170,30 +159,7 @@ namespace TraceWizard.UI
                 }
                 else
                 {
-                    var fileExtension = new FileInfo(filename).Extension.ToLower();
-
-                    if (fileExtension.Equals(".tracesql") || fileExtension.Equals(".trc"))
-                    {
-                        rightProcessor = new TraceSQLProcessor(filename);
-
-                        /* Read first line and check to see if this is an AE Tracesql */
-                        var or = File.OpenRead(filename);
-                        var sr = new StreamReader(or);
-                        var firstLine = sr.ReadLine();
-                        if (firstLine.Contains("AE SQL/PeopleCode Trace"))
-                        {
-                            ((TraceSQLProcessor)rightProcessor).IsAETrace = true;
-                        }
-                        sr.Close();
-
-                    }
-                    else if (fileExtension.Equals(".aet"))
-                    {
-                        rightProcessor = new AETTraceProcessor(filename);
-                    }
-                    
-                    rightProcessor.WorkerReportsProgress = true;
-                    rightProcessor.WorkerSupportsCancellation = true;
+                    rightProcessor = TraceProcessor.ForFile(filename);
 
                     rightProcessor.ProgressChanged += ProcessorRight_ProgressChanged;
                     rightProcessor.RunWorkerCompleted += ProcessorRight_RunWorkerCompleted;
