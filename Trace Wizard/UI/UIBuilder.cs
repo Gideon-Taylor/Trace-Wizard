@@ -847,6 +847,11 @@ namespace TraceWizard.UI
             {
                 executionTree.Nodes.Add(node);
             }
+
+            if (contextNodeList.Count == 1)
+            {
+                contextNodeList[0].Expand();
+            }
         }
 
         public static void BuildExecutionTree(TreeNode root, ExecutionCall call, Dictionary<SQLStatement, TreeNode> SQLMapToTree, Dictionary<ExecutionCall, TreeNode> ExecCallToTree, bool showLoading, bool diffMode = false)

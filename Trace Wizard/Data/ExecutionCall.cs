@@ -171,6 +171,7 @@ namespace TraceWizard.Data
         AE_SQL = 512, 
         AE_CALL = 1024, 
         AE_LOGMSG = 2048, 
-        AE_DOUNTIL = 4096
+        AE_DOUNTIL = 4096,
+        COBOL = 8192,
     }
 }
