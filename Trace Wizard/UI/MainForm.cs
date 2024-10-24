@@ -46,11 +46,18 @@ using TraceWizard.UI;
 
 namespace TraceWizard
 {
+    public enum FormTab
+    {
+        STATS, EXEC_PATH, SQL, STACK, PPC, VARS
+    }
+
     public partial class MainForm : Form
     {
         public static bool IsRunningMono = false;
         public static bool IsRunningOSX = false;
         public static double Version = 1.8;
+
+
 
         private void CheckForNewVersion()
         {
@@ -198,6 +205,8 @@ namespace TraceWizard
 
         private void Processor_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            TraceProcessor processor = (TraceProcessor)sender;
+
             progressBar.Value = 0;
             if (e.Cancelled)
             {
@@ -210,6 +219,28 @@ namespace TraceWizard
             traceData = (TraceData)e.Result;
             UpdateUI();
             sw.Stop();
+
+            switch (processor.startTab) {
+                case FormTab.EXEC_PATH:
+                    mainTabStrip.SelectedTab = executionPathTab;
+                    break;
+                case FormTab.SQL:
+                    mainTabStrip.SelectedTab = sqlStatementsTab;
+                    break;
+                case FormTab.STACK:
+                    mainTabStrip.SelectedTab = stackTraceTab;
+                    break;
+                case FormTab.PPC:
+                    mainTabStrip.SelectedTab = ppcObjectTab;
+                    break;
+                case FormTab.VARS:
+                    mainTabStrip.SelectedTab = variablesTab;
+                    break;
+                default:
+                    mainTabStrip.SelectedTab = StatsTab;
+                    break;
+            }
+        
 
             detailsBox.Items.Clear();
             detailsBox.Items.Add("Trace data loaded in " + sw.Elapsed.TotalSeconds + " seconds.");
@@ -970,14 +1001,15 @@ namespace TraceWizard
         private void copyResolvedStatementToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var sqlStatement = sqlListView.SelectedItems[0].Tag as SQLStatement;
-
+            var resolved = ResolveSQLStatement(sqlStatement);
+            var formatted = new SQLFormatter(resolved).Format();
             if (IsRunningOSX)
             {
-                OSXClipboard.CopyToClipboard(ResolveSQLStatement(sqlStatement));
+                OSXClipboard.CopyToClipboard(formatted);
             }
             else
             {
-                Clipboard.SetText(ResolveSQLStatement(sqlStatement));
+                Clipboard.SetText(formatted);
             }
 
             MessageBox.Show("Resolved statement copied to clipboard.");
@@ -994,7 +1026,7 @@ namespace TraceWizard
 
 
 
-            if (item.Tag.GetType().Equals(typeof(ExecutionCall)))
+            if (item.Tag != null && item.Tag.GetType().Equals(typeof(ExecutionCall)))
             {
                 ExecutionCall selectedCall = (ExecutionCall)item.Tag;
                 if (selectedCall.Type.HasFlag(ExecutionCallType.AE))

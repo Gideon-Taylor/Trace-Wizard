@@ -207,7 +207,7 @@ namespace TraceWizard.UI
         private void execTree_AfterCheck(object sender, TreeViewEventArgs e)
         {
             var treeView = sender as TreeView;
-            Dictionary<int,ExecutionCall> list = (treeView == execTreeLeft ? leftSelected : rightSelected);
+            Dictionary<int, ExecutionCall> list = (treeView == execTreeLeft ? leftSelected : rightSelected);
 
             var node = e.Node;
 
@@ -216,10 +216,11 @@ namespace TraceWizard.UI
                 foreach (TreeNode child in node.Nodes)
                 {
                     child.Checked = node.Checked;
-                    
+
                 }
                 /* Context level was clicked */
-                } else
+            }
+            else
             {
                 if (node.Checked)
                 {
@@ -233,12 +234,13 @@ namespace TraceWizard.UI
 
                     for (var x = 0; x < parentIndex; x++)
                     {
-                        
+
                         itemsAbove += treeView.Nodes[x].Nodes.Count;
                     }
 
                     list.Add(itemsAbove + indexInContext, node.Tag as ExecutionCall);
-                } else
+                }
+                else
                 {
                     var indexInContext = node.Index;
 
@@ -253,7 +255,7 @@ namespace TraceWizard.UI
                     list.Remove(itemsAbove + indexInContext);
                 }
             }
-            
+
         }
 
         private void btnCompare_Click(object sender, EventArgs e)

@@ -41,11 +41,13 @@ namespace TraceWizard.Processors
         string _file;
         private TraceData Data = new TraceData();
         private IEnumerable<ITraceProcessor> _processors;
-        public TraceProcessor(string filename, IEnumerable<ITraceProcessor> processors)
+        public FormTab startTab;
+        public TraceProcessor(string filename, IEnumerable<ITraceProcessor> processors, FormTab startTab = FormTab.STATS)
         {
             _file = filename;
             _processors = processors;
             this.DoWork += TraceProcessor_DoWork;
+            this.startTab = startTab;
         }
 
         private void TraceProcessor_DoWork(object sender, DoWorkEventArgs e)
@@ -114,7 +116,7 @@ namespace TraceWizard.Processors
                 case TraceType.COBOL:
                     return new List<ITraceProcessor>
                     {
-                        new CobolSQLProcessor(),new CobolExecutionPathProcessor()
+                        new CobolSQLProcessor()/*,new CobolExecutionPathProcessor()*/
                     };
 
             }
@@ -127,12 +129,12 @@ namespace TraceWizard.Processors
             var fileExtension = new FileInfo(filename).Extension.ToLower();
             if (fileExtension.Equals(".aet"))
             {
-                processor = new TraceProcessor(filename, TraceProcessor.MakeSetFor(TraceType.AET));
+                processor = new TraceProcessor(filename, TraceProcessor.MakeSetFor(TraceType.AET), FormTab.EXEC_PATH);
             }
 
             if (fileExtension.Equals(".tracesql"))
             {
-                processor = new TraceProcessor(filename, TraceProcessor.MakeSetFor(TraceType.TRACESQL));
+                processor = new TraceProcessor(filename, TraceProcessor.MakeSetFor(TraceType.TRACESQL), FormTab.STATS);
             }
 
             if (fileExtension.Equals(".trc"))
@@ -144,10 +146,10 @@ namespace TraceWizard.Processors
 
                 if (firstLine.Contains("AE SQL/PeopleCode Trace"))
                 {
-                    processor = new TraceProcessor(filename, TraceProcessor.MakeSetFor(TraceType.TRACESQL));
+                    processor = new TraceProcessor(filename, TraceProcessor.MakeSetFor(TraceType.TRACESQL), FormTab.STATS);
                 } else if (firstLine.Contains("PeopleSoft Batch Timings Report"))
                 {
-                    processor = new TraceProcessor(filename, TraceProcessor.MakeSetFor(TraceType.COBOL));
+                    processor = new TraceProcessor(filename, TraceProcessor.MakeSetFor(TraceType.COBOL), FormTab.SQL);
                 }               
             }
             if (processor != null)
