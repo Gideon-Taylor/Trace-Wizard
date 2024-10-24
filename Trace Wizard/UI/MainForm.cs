@@ -55,7 +55,7 @@ namespace TraceWizard
     {
         public static bool IsRunningMono = false;
         public static bool IsRunningOSX = false;
-        public static double Version = 1.8;
+        public static double Version = 1.9;
 
 
 
