@@ -65,26 +65,23 @@ namespace TraceWizard.Processors
                 var match = bufferBindValue.Match(line);
                 if (match.Success)
                 {
-                    /* add to buffer of previous SQL */
-                    if (latestSQLStatement.BindValues == null)
-                    {
-                        /* init buffer data */
-                        latestSQLStatement.BindValues = new List<SQLBindValue>();
-                    }
                     SQLBindValue bind = new SQLBindValue();
                     bind.Index = int.Parse(match.Groups[1].Value);
                     bind.Type = 0;
                     bind.Length = match.Groups[2].Value.Length;
                     bind.Value = match.Groups[2].Value;
 
-                    latestSQLStatement.BindValues.Add(bind);
+                    latestSQLStatement.AddBindValue(bind);
                 }
                 else
                 {
                     expectingBinds = false;
                     return;
                 }
-            }
+            } else
+            {
+                            }
+
 
             if (expectingSQL && line.Equals("/") == false)
             {

@@ -71,7 +71,7 @@ namespace TraceWizard.Processors
 
                 /* AET TRC files don't have explicit Exec statements, so set the Exec time from the COM Stmt line's Duration */
                 /* this will be overwritten in case we are in a tracesql file by the subsequent Exec statement */
-                currentStatement.ExecTime = double.Parse(m.Groups[2].Value);
+                //currentStatement.ExecTime = double.Parse(m.Groups[2].Value);
                 return;
             }
 
@@ -103,7 +103,7 @@ namespace TraceWizard.Processors
                 bind.Type = int.Parse(m.Groups[2].Value);
                 bind.Length = int.Parse(m.Groups[3].Value);
                 bind.Value = m.Groups[4].Value;
-                currentStatement.BindValues.Add(bind);
+                currentStatement.AddBindValue(bind);
                 return;
             }
 

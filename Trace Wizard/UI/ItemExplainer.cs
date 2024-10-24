@@ -48,15 +48,23 @@ namespace TraceWizard.UI
                 lines.Add("Statement: " + sql.Statement);
                 lines.Add(String.Format("Duration: {0}, Execute: {1}, Fetch: {2}.", sql.Duration, sql.ExecTime, sql.FetchTime));
                 lines.Add("Fetched " + sql.FetchCount + " rows.");
-                lines.Add("Bind count: " + sql.BindValues.Count);
-                for (var x = 0; x < sql.BindValues.Count; x++)
+                var bindValues = sql.Executions[0].BindValues;
+                lines.Add("Bind count: " + bindValues.Count);
+                for (var x = 0; x < bindValues.Count; x++)
                 {
-                    var index = sql.BindValues[x].Index;
-                    var value = sql.BindValues[x].Value;
-                    var typ = sql.BindValues[x].Type;
-                    var length = sql.BindValues[x].Length;
+                    var index = bindValues[x].Index;
+                    var value = bindValues[x].Value;
+                    var typ = bindValues[x].Type;
+                    var length = bindValues[x].Length;
 
-                    lines.Add(String.Format("Bind #{0} - {1} ({2}) - {3}", index, typ, length, value));
+                    if (bindValues[x].TypeString != null)
+                    {
+                        lines.Add(String.Format("Bind #{0} - [{1}] = {2}", index, bindValues[x].TypeString, value));
+                    }
+                    else
+                    {
+                        lines.Add(String.Format("Bind #{0} - {1} ({2}) = {3}", index, typ, length, value));
+                    }
                 }
                 lines.Add("Caller: " + (sql.ParentCall == null ? "None" : ("Line #" + sql.ParentCall.StartLine) + " " + sql.ParentCall.Function));
 
@@ -97,21 +105,22 @@ namespace TraceWizard.UI
                     {
                         lines.Add("Fetched " + sql.FetchCount + " rows.");
                     }
-                    lines.Add("Bind count: " + sql.BindValues.Count);
-                    for (var x = 0; x < sql.BindValues.Count; x++)
+                    var bindValues = sql.Executions[0].BindValues;
+                    lines.Add("Bind count: " + bindValues.Count);
+                    for (var x = 0; x < bindValues.Count; x++)
                     {
-                        var index = sql.BindValues[x].Index;
-                        var value = sql.BindValues[x].Value;
-                        var typ = sql.BindValues[x].Type;
-                        var typeString = sql.BindValues[x].TypeString;
-                        var length = sql.BindValues[x].Length;
+                        var index = bindValues[x].Index;
+                        var value = bindValues[x].Value;
+                        var typ = bindValues[x].Type;
+                        var typeString = bindValues[x].TypeString;
+                        var length = bindValues[x].Length;
 
                         if (typeString != null)
                         {
-                            lines.Add(String.Format("Bind #{0} - {1} ({2}) - {3}", index, typeString , length, value));
+                            lines.Add(String.Format("Bind #{0} - {1} ({2}) = {3}", index, typeString , length, value));
                         } else
                         {
-                            lines.Add(String.Format("Bind #{0} - {1} ({2}) - {3}", index, typ, length, value));
+                            lines.Add(String.Format("Bind #{0} - {1} ({2}) = {3}", index, typ, length, value));
                         }
                         
                     }

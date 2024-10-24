@@ -26,17 +26,32 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
 namespace TraceWizard.Data
 {
     [Serializable]
+    public class SQLExecution
+    {
+        public List<SQLBindValue> BindValues = new List<SQLBindValue>();
+        public double ExecTime;
+        public double FetchTime;
+
+        public int FetchCount;
+        public bool BindsOpen = true;
+    }
+
+    [Serializable]
     public class SQLStatement
     {
         public static uint NextID;
 
         public uint InternalID = NextID++;
+
+        SQLExecution currentExecution;
+
         public SQLStatement()
         {
 
@@ -60,21 +75,108 @@ namespace TraceWizard.Data
         }
 
         public ExecutionCall ParentCall;
-        public int FetchCount;
+
         public string SQLID;
         public string Statement;
-
+        public int Cursor;
         public string WhereClause;
         public string FromClause;
-        public double ExecTime;
-        public double FetchTime;
+        public double ExecTime {
+            get {
+                return currentExecution.ExecTime;
+            }
+            set {
+                currentExecution.BindsOpen = false;
+                currentExecution.ExecTime = value;
+            }
+        }
+        public double FetchTime {
+            get
+            {
+                return currentExecution.FetchTime;
+            }
+            set
+            {
+
+                currentExecution.FetchTime = value;
+                currentExecution.FetchCount++;
+            }
+        }
+
+        public int FetchCount
+        {
+            get
+            {
+                return currentExecution.FetchCount;
+            }
+            set
+            {
+                currentExecution.FetchCount = value;
+            }
+        }
+
+        public int TotalExecutions
+        {
+            get
+            {
+                return Executions.Count;
+            }
+        }
+
+        public double TotalExecTime
+        {
+            get
+            {
+                return Executions.Sum(e => e.ExecTime);
+            }
+        }
+
+        public double TotalFetchTime
+        {
+            get
+            {
+                return Executions.Sum(e => e.FetchTime);
+            }
+        }
+
+        public double AverageExecTime
+        {
+            get
+            {
+                return ExecTime / TotalExecutions;
+            }
+        }
+
+        public double AverageFetchTime
+        {
+            get
+            {
+                return FetchTime / TotalExecutions;
+            }
+        }
+
+        public double AverageDuration
+        {
+            get
+            {
+                return Duration / TotalExecutions;
+            }
+        }
+
+        public SQLExecution CurrentExecution
+        {
+            get
+            {
+                return currentExecution;
+            }
+        }
 
         public bool IsError;
         public bool Cobol;
         public SQLError ErrorInfo;
         
         public int RCNumber;
-        public List<SQLBindValue> BindValues = new List<SQLBindValue>();
+        public List<SQLExecution> Executions = new List<SQLExecution>();
         public List<string> BufferData = null;
         public List<String> Tables = new List<string>();
         public SQLType Type;
@@ -85,15 +187,31 @@ namespace TraceWizard.Data
         public SQLStatement(string text)
         {
             Statement = text.Trim();
+            currentExecution = new SQLExecution();
+            AddExecution();
             DetermineType();
             ParseWhereClause();
             ParseFromClause();
             GenerateSQLID();
         }
 
+        public void AddBindValue(SQLBindValue bind)
+        {
+            if (currentExecution.BindsOpen == false)
+            {
+                currentExecution = new SQLExecution();
+                Executions.Add(currentExecution);
+            }
+            currentExecution.BindValues.Add(bind);
+        }
+
+        private void AddExecution()
+        {
+            currentExecution = new SQLExecution();
+            Executions.Add(currentExecution);
+        }
         private void GenerateSQLID()
         {
-
             MD5CryptoServiceProvider hashlib = new MD5CryptoServiceProvider();
             byte[] arrData = null;
             byte[] byteHash = null;
