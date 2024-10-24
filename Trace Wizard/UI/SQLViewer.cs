@@ -92,7 +92,7 @@ namespace TraceWizard.UI
 
             StringBuilder sb = new StringBuilder();
 
-            foreach (var b in sqlStatement.BindValues)
+            foreach (var b in sqlStatement.Executions[0].BindValues)
             {
                 sb.AppendLine(String.Format("Bind {0} = {1}", b.Index, b.Value));
             }
@@ -107,7 +107,7 @@ namespace TraceWizard.UI
 
             string workingStatement = sqlStatement.Statement;
 
-            foreach (var b in sqlStatement.BindValues.OrderBy(p => p.Index).Reverse())
+            foreach (var b in sqlStatement.Executions[0].BindValues.OrderBy(p => p.Index).Reverse())
             {
                 workingStatement = workingStatement.Replace(":" + b.Index, "'" + b.Value + "'");
             }
@@ -133,7 +133,7 @@ namespace TraceWizard.UI
 
             var sqlStatment = item.Tag as SQLStatement;
 
-            if (sqlStatment.BindValues.Count == 0)
+            if (sqlStatment.Executions[0].BindValues.Count == 0)
             {
                 copyBindsToolStripMenuItem.Enabled = false;
                 copyResolvedStatementToolStripMenuItem.Enabled = false;

@@ -239,7 +239,7 @@ namespace TraceWizard.UI
 
             string workingStatement = sqlStatement.Statement;
 
-            foreach (var b in sqlStatement.BindValues.OrderBy(p => p.Index).Reverse())
+            foreach (var b in sqlStatement.Executions[0].BindValues.OrderBy(p => p.Index).Reverse())
             {
                 var valueString = "";
                 if (b.Type == 19)
@@ -289,7 +289,7 @@ namespace TraceWizard.UI
 
             StringBuilder sb = new StringBuilder();
 
-            foreach (var b in sqlStatement.BindValues)
+            foreach (var b in sqlStatement.Executions[0].BindValues)
             {
                 sb.AppendLine(String.Format("Bind {0} = {1}", b.Index, b.Value));
             }

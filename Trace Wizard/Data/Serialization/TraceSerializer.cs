@@ -220,18 +220,28 @@ namespace TraceWizard.Data.Serialization
                 WriteUint(s.RCNumber);
                 WriteUint(ContextList.IndexOf(s.Context));
 
-                /* Write out number of SQL Binds */
-                WriteUint(s.BindValues.Count);
 
-                foreach(var bind in s.BindValues)
+                /* Write out number of SQL Executions */
+                WriteUint(s.Executions.Count);
+                foreach(var exec in s.Executions)
                 {
-                    /* write out each bind inline */
-                    WriteUint(bind.InternalID);
-                    WriteUint(bind.Index);
-                    WriteUint(bind.Type);
-                    WriteUint(bind.Length);
-                    WriteString(bind.Value);
+                    WriteUint(exec.FetchCount);
+                    WriteDouble(exec.ExecTime);
+                    WriteDouble(exec.FetchTime);
+
+                    /* Write out number of SQL Binds */
+                    WriteUint(exec.BindValues.Count);
+                    foreach (var bind in exec.BindValues)
+                    {
+                        /* write out each bind inline */
+                        WriteUint(bind.InternalID);
+                        WriteUint(bind.Index);
+                        WriteUint(bind.Type);
+                        WriteUint(bind.Length);
+                        WriteString(bind.Value);
+                    }
                 }
+                
             }
 
 

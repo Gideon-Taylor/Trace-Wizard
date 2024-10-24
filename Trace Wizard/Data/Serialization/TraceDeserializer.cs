@@ -247,7 +247,7 @@ namespace TraceWizard.Data.Serialization
                 for (var y = 0; y < bindCount; y++)
                 {
                     SQLBindValue bind = new SQLBindValue();
-                    item.BindValues.Add(bind);
+                    item.AddBindValue(bind);
 
                     bind.InternalID = ReadUint();
                     bind.Index = (int)ReadUint();
