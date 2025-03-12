@@ -199,7 +199,7 @@ namespace TraceWizard.Processors
 
             if (callChain.Count > 0 && callChain.Peek().Type == ExecutionCallType.CALL)
             {
-                while (callChain.Peek().Type == ExecutionCallType.CALL || callChain.Peek().Nest != nest)
+                while (callChain.Count > 0 && (callChain.Peek().Type == ExecutionCallType.CALL || callChain.Peek().Nest != nest))
                 {
                     var popped = callChain.Pop();
                     if (popped.StopLine == 0)
@@ -209,7 +209,10 @@ namespace TraceWizard.Processors
                     lastPopped = popped;
                 }
             }
-
+            if (callChain.Count == 0)
+            {
+                Debugger.Break();
+            }
             var call = callChain.Pop();
             lastPopped = call;
             call.StopLine = lineNumber;
@@ -462,7 +465,8 @@ namespace TraceWizard.Processors
 
     public class ExecutionPathProcessor : ITraceProcessor
     {
-        Regex contextMarker = new Regex("PSAPPSRV\\.\\d+ \\(\\d+\\)");
+        //Regex contextMarker = new Regex("PSAPPSRV\\.\\d+ \\(\\d+\\)");
+        Regex contextMarker = new Regex(@"^PSAPPSRV\.\d+.+?\(\d+\)");
         Regex startMarker = new Regex(">>> start\\s+Nest=(\\d+)\\s+(.*)");
         Regex startExtMarker = new Regex(">>> start-ext\\sNest=(\\d+)\\s(.*)");
         Regex endMarker = new Regex("<<< end\\s+Nest=(\\d+)\\s+(.*?)\\s+Dur=(\\d+\\.\\d+)");
