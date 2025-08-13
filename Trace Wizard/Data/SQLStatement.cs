@@ -99,7 +99,6 @@ namespace TraceWizard.Data
             {
 
                 currentExecution.FetchTime = value;
-                currentExecution.FetchCount++;
             }
         }
 
